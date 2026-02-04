@@ -96,3 +96,33 @@ verifyBtn.addEventListener("click", () => {
 
 // Initialize on page load
 init();
+// Initialize the image grid
+function init() {
+    imageContainer.innerHTML = "";
+    selectedImages = [];
+    message.textContent = "";
+    resetBtn.style.display = "none";
+    verifyBtn.style.display = "none";
+
+    // Pick a random image to duplicate
+    const duplicateIndex = Math.floor(Math.random() * images.length);
+    const duplicateImage = images[duplicateIndex];
+
+    // Prepare 6 images (5 unique + 1 duplicate)
+    let displayImages = images.map((src, i) => ({ src, class: `img${i + 1}` }));
+    displayImages.push({ src: duplicateImage, class: `img${duplicateIndex + 1}` }); // duplicate has same class
+
+    // Shuffle the 6 images
+    shuffle(displayImages);
+
+    // Create image elements
+    displayImages.forEach((imgObj) => {
+        const img = document.createElement("img");
+        img.src = imgObj.src;
+        img.classList.add(imgObj.class); // assign the required class
+        img.dataset.src = imgObj.src;
+        img.addEventListener("click", () => handleClick(img));
+        imageContainer.appendChild(img);
+    });
+}
+
